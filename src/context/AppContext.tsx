@@ -595,7 +595,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                   category: raw.category,
                   city: raw.city,
                   isActive: raw.is_active,
-                  logo: raw.logo_url || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150",
+                  logo: raw.logo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(raw.name)}&background=f97316&color=fff`,
                   address: raw.address || "",
                 },
               ];
@@ -639,7 +639,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               email: p.email,
               name: p.name,
               role: p.role,
-              avatar: p.avatar_url || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
+              avatar: p.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(p.name)}&background=3b82f6&color=fff`,
               phone: p.phone || "",
               balance: p.balance,
             }))
@@ -658,7 +658,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               category: s.category,
               city: s.city,
               isActive: s.is_active,
-              logo: s.logo_url || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150",
+              logo: s.logo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=f97316&color=fff`,
               address: s.address || "",
             }))
           );
@@ -766,7 +766,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                 email: profile.email,
                 name: profile.name,
                 role: profile.role,
-                avatar: profile.avatar_url || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150",
+                avatar: profile.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(profile.name)}&background=3b82f6&color=fff`,
                 phone: profile.phone || "",
                 balance: profile.balance,
               });
@@ -881,7 +881,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         email,
         name,
         role,
-        avatar: `https://images.unsplash.com/photo-${1500000000000 + Math.floor(Math.random() * 1000000)}?w=150&h=150&fit=crop&crop=face`,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=3b82f6&color=fff`,
         phone: "08" + Math.floor(100000000 + Math.random() * 900000000),
         balance: role === "Owner" ? 0 : undefined,
       };
@@ -909,7 +909,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       category,
       city: "Solo", // Force to Solo as requested by user
       isActive: true,
-      logo: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&h=150&fit=crop",
+      logo: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f97316&color=fff`,
       address,
     };
 
