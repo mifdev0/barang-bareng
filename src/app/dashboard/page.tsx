@@ -578,8 +578,8 @@ export default function DashboardPage() {
               ======================================================== */}
           {currentUser.role === "Customer" && (
             <Tabs defaultValue="orders" className="space-y-6">
-              <TabsList className="bg-white border border-slate-200 p-1 rounded-xl">
-                <TabsTrigger value="orders" className="rounded-lg font-bold text-xs py-2">
+              <TabsList className="bg-white border border-slate-200 p-1 rounded-xl max-w-full overflow-x-auto flex-nowrap justify-start">
+                <TabsTrigger value="orders" className="rounded-lg font-bold text-xs py-2 shrink-0">
                   <ShoppingBag className="h-4 w-4 mr-2" />
                   Order Sewa Saya
                 </TabsTrigger>
@@ -714,16 +714,16 @@ export default function DashboardPage() {
 
               {/* Main Tabs */}
               <Tabs defaultValue="orders" className="space-y-6">
-                <TabsList className="bg-white border border-slate-200 p-1 rounded-xl">
-                  <TabsTrigger value="orders" className="rounded-lg font-bold text-xs py-2">
+                <TabsList className="bg-white border border-slate-200 p-1 rounded-xl max-w-full overflow-x-auto flex-nowrap justify-start">
+                  <TabsTrigger value="orders" className="rounded-lg font-bold text-xs py-2 shrink-0">
                     <ShoppingBag className="h-4 w-4 mr-2" />
                     Order Masuk ({ownerOrders.length})
                   </TabsTrigger>
-                  <TabsTrigger value="stores" className="rounded-lg font-bold text-xs py-2">
+                  <TabsTrigger value="stores" className="rounded-lg font-bold text-xs py-2 shrink-0">
                     <StoreIcon className="h-4 w-4 mr-2" />
                     Toko Saya ({ownerStores.length})
                   </TabsTrigger>
-                  <TabsTrigger value="items" className="rounded-lg font-bold text-xs py-2">
+                  <TabsTrigger value="items" className="rounded-lg font-bold text-xs py-2 shrink-0">
                     <ClipboardList className="h-4 w-4 mr-2" />
                     Daftar Barang ({ownerItems.length})
                   </TabsTrigger>

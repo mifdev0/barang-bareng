@@ -32,14 +32,14 @@ export const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md">
-      <div className="container mx-auto flex h-32 items-center justify-between px-4 sm:px-6">
+      <div className="container mx-auto flex h-20 md:h-24 items-center justify-between px-4 sm:px-6">
         
         {/* Logo Left */}
         <Link href="/" className="flex items-center">
           <img 
             src="/logoBaru.png" 
             alt="Barang Bareng Logo" 
-            className="h-26 w-auto object-contain"
+            className="h-16 md:h-20 w-auto object-contain"
           />
         </Link>
 

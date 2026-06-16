@@ -214,7 +214,7 @@ export default function Home() {
             <p className="text-lg font-bold text-slate-800 mt-1">Telusuri Barang Sesuai Kebutuhan Anda</p>
           </div>
           
-          <div className="flex items-center justify-center gap-3 overflow-x-auto pb-2 scrollbar-none px-4">
+          <div className="flex items-center justify-start md:justify-center gap-3 overflow-x-auto pb-2 scrollbar-none px-4">
             {categories.map((cat) => {
               const Icon = cat.icon;
               const isSelected = selectedCategory === cat.name;

@@ -19,7 +19,8 @@ import {
   ShoppingBag, 
   HelpCircle,
   Clock,
-  ChevronRight
+  ChevronRight,
+  ArrowLeft
 } from "lucide-react";
 
 function ChatContent() {
@@ -163,7 +164,7 @@ function ChatContent() {
         <div className="w-full grid grid-cols-1 md:grid-cols-12 bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden h-full">
           
           {/* Left Panel: Chat List (cols-4) */}
-          <div className="md:col-span-4 border-r border-slate-100 flex flex-col h-full bg-slate-50/50">
+          <div className={`md:col-span-4 border-r border-slate-100 flex flex-col h-full bg-slate-50/50 ${activeChatId ? "hidden md:flex" : "flex"}`}>
             <div className="p-4 border-b border-slate-100 bg-white">
               <h2 className="font-extrabold text-slate-800 text-lg flex items-center gap-2">
                 <MessageSquare className="h-5 w-5 text-blue-600" />
@@ -225,12 +226,18 @@ function ChatContent() {
           </div>
 
           {/* Right Panel: Active Chat (cols-8) */}
-          <div className="md:col-span-8 flex flex-col h-full">
+          <div className={`md:col-span-8 flex flex-col h-full ${!activeChatId ? "hidden md:flex" : "flex"}`}>
             {activeChat && activeItem ? (
               <>
                 {/* Chat Header: item details + action buttons */}
                 <div className="p-4 border-b border-slate-100 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
+                  <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
+                    <button 
+                      onClick={() => router.push('/chat')}
+                      className="md:hidden p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors mr-1 cursor-pointer shrink-0"
+                    >
+                      <ArrowLeft className="h-5 w-5" />
+                    </button>
                     <img
                       src={activeItem.photos[0]}
                       alt={activeItem.name}
