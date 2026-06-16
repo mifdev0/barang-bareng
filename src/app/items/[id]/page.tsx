@@ -197,12 +197,12 @@ export default function ItemDetail({ params }: { params: Promise<{ id: string }>
                   </div>
 
                   {/* Title */}
-                  <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-snug">
+                  <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
                     {item.name}
                   </h1>
 
                   {/* Rating */}
-                  <div className="flex items-center gap-1.5 mt-3 border-b border-slate-100 pb-4">
+                  <div className="flex items-center gap-1.5 mt-2 border-b border-slate-100 pb-3">
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
                         <Star
@@ -213,16 +213,16 @@ export default function ItemDetail({ params }: { params: Promise<{ id: string }>
                         />
                       ))}
                     </div>
-                    <span className="text-sm font-bold text-slate-700">{item.rating}</span>
-                    <span className="text-xs text-slate-400">({item.reviewCount || 12} ulasan)</span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-700">{item.rating}</span>
+                    <span className="text-[10px] sm:text-xs text-slate-400">({item.reviewCount || 12} ulasan)</span>
                   </div>
 
                   {/* Price info */}
-                  <div className="py-6 flex flex-col bg-slate-50/50 rounded-2xl p-4 my-6 border border-slate-100">
-                    <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">Tarif Sewa</span>
-                    <span className="text-3xl font-black text-teal-600 mt-1">
+                  <div className="p-4 my-4 flex flex-col bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <span className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Tarif Sewa</span>
+                    <span className="text-2xl sm:text-3xl font-black text-teal-600 mt-1">
                       Rp {item.pricePerDay.toLocaleString("id-ID")}
-                      <span className="text-sm font-medium text-slate-500"> / Hari</span>
+                      <span className="text-xs sm:text-sm font-medium text-slate-500"> / Hari</span>
                     </span>
                   </div>
 
@@ -235,92 +235,102 @@ export default function ItemDetail({ params }: { params: Promise<{ id: string }>
                         </div>
                       ) : (
                         <>
-                          <Dialog open={isRentDialogOpen} onOpenChange={setIsRentDialogOpen}>
-                            <DialogTrigger className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl text-base font-bold shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2 cursor-pointer">
-                              <CalendarDays className="h-5 w-5" />
-                              Sewa Sekarang (Pilih Tanggal)
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[400px] bg-white">
-                              <DialogHeader>
-                                <DialogTitle>Tentukan Tanggal Sewa</DialogTitle>
-                              </DialogHeader>
-                              <form onSubmit={handleRentNow} className="space-y-4 pt-4">
-                                <div className="space-y-1.5">
-                                  <label className="text-xs font-bold text-slate-700">Tanggal Mulai</label>
-                                  <Input
-                                    required
-                                    type="date"
-                                    value={startDate}
-                                    min={new Date().toISOString().split("T")[0]}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                  />
-                                </div>
-                                <div className="space-y-1.5">
-                                  <label className="text-xs font-bold text-slate-700">Tanggal Selesai</label>
-                                  <Input
-                                    required
-                                    type="date"
-                                    value={endDate}
-                                    min={startDate || new Date().toISOString().split("T")[0]}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                  />
-                                </div>
-                                
-                                <div className="space-y-1.5">
-                                  <label className="text-xs font-bold text-slate-700">Metode Pengantaran</label>
-                                  <select
-                                    value={deliveryMethod}
-                                    onChange={(e) => setDeliveryMethod(e.target.value as "Ambil di Lokasi" | "Diantar")}
-                                    className="w-full border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white"
-                                  >
-                                    <option value="Ambil di Lokasi">Ambil di Lokasi (Pickup)</option>
-                                    <option value="Diantar">Diantar ke Alamat (Delivery)</option>
-                                  </select>
-                                </div>
-
-                                {deliveryMethod === "Ambil di Lokasi" && (
-                                  <div className="p-3 bg-orange-50/50 border border-orange-100 rounded-xl text-xs text-slate-700 space-y-1">
-                                    <p className="font-bold text-orange-700">Alamat Toko (Pengambilan):</p>
-                                    <p>{store?.address || "Solo (Hubungi owner untuk detail lokasi)"}</p>
-                                  </div>
-                                )}
-
-                                {deliveryMethod === "Diantar" && (
+                          {currentUser ? (
+                            <Dialog open={isRentDialogOpen} onOpenChange={setIsRentDialogOpen}>
+                              <DialogTrigger className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm sm:text-base font-bold shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2 cursor-pointer">
+                                <CalendarDays className="h-5 w-5" />
+                                Sewa Sekarang (Pilih Tanggal)
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[400px] bg-white">
+                                <DialogHeader>
+                                  <DialogTitle>Tentukan Tanggal Sewa</DialogTitle>
+                                </DialogHeader>
+                                <form onSubmit={handleRentNow} className="space-y-4 pt-4">
                                   <div className="space-y-1.5">
-                                    <label className="text-xs font-bold text-slate-700">Alamat Pengantaran</label>
-                                    <textarea
+                                    <label className="text-xs font-bold text-slate-700">Tanggal Mulai</label>
+                                    <Input
                                       required
-                                      placeholder="Tulis alamat lengkap pengiriman di Solo..."
-                                      value={deliveryAddress}
-                                      onChange={(e) => setDeliveryAddress(e.target.value)}
-                                      className="w-full border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 bg-slate-50 focus:bg-white focus:outline-none min-h-[60px]"
+                                      type="date"
+                                      value={startDate}
+                                      min={new Date().toISOString().split("T")[0]}
+                                      onChange={(e) => setStartDate(e.target.value)}
                                     />
                                   </div>
-                                )}
-
-                                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs space-y-1">
-                                  <div className="flex justify-between font-semibold text-slate-600">
-                                    <span>Tarif Sewa:</span>
-                                    <span>Rp {item.pricePerDay.toLocaleString("id-ID")} / Hari</span>
+                                  <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-700">Tanggal Selesai</label>
+                                    <Input
+                                      required
+                                      type="date"
+                                      value={endDate}
+                                      min={startDate || new Date().toISOString().split("T")[0]}
+                                      onChange={(e) => setEndDate(e.target.value)}
+                                    />
                                   </div>
-                                  <p className="text-[10px] text-slate-400 font-semibold">*Total biaya sewa akan otomatis dihitung setelah Anda memilih tanggal.</p>
-                                </div>
+                                  
+                                  <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-700">Metode Pengantaran</label>
+                                    <select
+                                      value={deliveryMethod}
+                                      onChange={(e) => setDeliveryMethod(e.target.value as "Ambil di Lokasi" | "Diantar")}
+                                      className="w-full border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white"
+                                    >
+                                      <option value="Ambil di Lokasi">Ambil di Lokasi (Pickup)</option>
+                                      <option value="Diantar">Diantar ke Alamat (Delivery)</option>
+                                    </select>
+                                  </div>
 
-                                <Button 
-                                  type="submit" 
-                                  disabled={isCreatingOrder}
-                                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-5 rounded-xl disabled:opacity-50"
-                                >
-                                  {isCreatingOrder ? "Memproses Sewa..." : "Konfirmasi Sewa & Lanjut Bayar"}
-                                </Button>
-                              </form>
-                            </DialogContent>
-                          </Dialog>
+                                  {deliveryMethod === "Ambil di Lokasi" && (
+                                    <div className="p-3 bg-orange-50/50 border border-orange-100 rounded-xl text-xs text-slate-700 space-y-1">
+                                      <p className="font-bold text-orange-700">Alamat Toko (Pengambilan):</p>
+                                      <p>{store?.address || "Solo (Hubungi owner untuk detail lokasi)"}</p>
+                                    </div>
+                                  )}
+
+                                  {deliveryMethod === "Diantar" && (
+                                    <div className="space-y-1.5">
+                                      <label className="text-xs font-bold text-slate-700">Alamat Pengantaran</label>
+                                      <textarea
+                                        required
+                                        placeholder="Tulis alamat lengkap pengiriman di Solo..."
+                                        value={deliveryAddress}
+                                        onChange={(e) => setDeliveryAddress(e.target.value)}
+                                        className="w-full border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 bg-slate-50 focus:bg-white focus:outline-none min-h-[60px]"
+                                      />
+                                    </div>
+                                  )}
+
+                                  <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl text-xs space-y-1">
+                                    <div className="flex justify-between font-semibold text-slate-600">
+                                      <span>Tarif Sewa:</span>
+                                      <span>Rp {item.pricePerDay.toLocaleString("id-ID")} / Hari</span>
+                                    </div>
+                                    <p className="text-[10px] text-slate-400 font-semibold">*Total biaya sewa akan otomatis dihitung setelah Anda memilih tanggal.</p>
+                                  </div>
+
+                                  <Button 
+                                    type="submit" 
+                                    disabled={isCreatingOrder}
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl disabled:opacity-50 text-xs sm:text-sm cursor-pointer"
+                                  >
+                                    {isCreatingOrder ? "Memproses Sewa..." : "Konfirmasi Sewa & Lanjut Bayar"}
+                                  </Button>
+                                </form>
+                              </DialogContent>
+                            </Dialog>
+                          ) : (
+                            <Button
+                              onClick={() => router.push(`/login?redirect=/items/${item.id}`)}
+                              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm sm:text-base font-bold shadow-lg shadow-emerald-600/10 flex items-center justify-center gap-2 cursor-pointer h-12"
+                            >
+                              <CalendarDays className="h-5 w-5" />
+                              Sewa Sekarang (Pilih Tanggal)
+                            </Button>
+                          )}
 
                           <Button
                             onClick={handleContactOwner}
                             variant="outline"
-                            className="w-full border-blue-200 hover:bg-blue-50 text-blue-700 py-6 rounded-2xl text-base font-bold flex items-center justify-center gap-2"
+                            className="w-full border-blue-200 hover:bg-blue-50 text-blue-700 py-3 rounded-xl text-sm sm:text-base font-bold flex items-center justify-center gap-2 cursor-pointer h-12"
                           >
                             <MessageSquare className="h-5 w-5" />
                             Hubungi Owner & Nego

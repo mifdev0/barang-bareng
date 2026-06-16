@@ -150,24 +150,26 @@ export const Navbar = () => {
             <SheetTrigger className="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors duration-200 cursor-pointer">
               <Menu className="h-6 w-6" />
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[350px] bg-white">
-              <div className="flex flex-col gap-6 py-6 h-full justify-between">
+            <SheetContent side="right" className="w-[280px] sm:w-[320px] p-6 bg-white flex flex-col justify-between h-full border-l border-slate-100 shadow-2xl">
+              <div className="flex flex-col gap-6 h-full justify-between">
                 <div className="flex flex-col gap-6">
                   <div className="flex items-center border-b border-slate-100 pb-4">
                     <img 
                       src="/logoBaru.png" 
                       alt="Barang Bareng Logo" 
-                      className="h-20 w-auto object-contain"
+                      className="h-16 w-auto object-contain"
                     />
                   </div>
 
-                  <nav className="flex flex-col gap-4">
+                  <nav className="flex flex-col gap-2.5">
                     {navLinks.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
-                        className={`text-base font-semibold ${
-                          pathname === link.href ? "text-blue-700" : "text-slate-600"
+                        className={`text-sm font-bold px-3 py-2 rounded-xl transition-all duration-200 ${
+                          pathname === link.href 
+                            ? "bg-blue-50 text-blue-700 font-extrabold" 
+                            : "text-slate-650 hover:bg-slate-50"
                         }`}
                       >
                         {link.label}
@@ -176,7 +178,11 @@ export const Navbar = () => {
                     {currentUser && (
                       <Link
                         href="/dashboard"
-                        className="text-base font-semibold text-slate-600"
+                        className={`text-sm font-bold px-3 py-2 rounded-xl transition-all duration-200 ${
+                          pathname === "/dashboard"
+                            ? "bg-blue-50 text-blue-700 font-extrabold"
+                            : "text-slate-650 hover:bg-slate-50"
+                        }`}
                       >
                         Dashboard & Transaksi
                       </Link>
@@ -186,24 +192,23 @@ export const Navbar = () => {
 
                 <div className="flex flex-col gap-4 border-t border-slate-100 pt-4">
                   {currentUser ? (
-                    <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-3 px-1">
+                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-3.5 flex flex-col gap-3.5 shadow-sm">
+                      <div className="flex items-center gap-3">
                         <img
                           src={currentUser.avatar}
                           alt={currentUser.name}
-                          className="h-10 w-10 rounded-full object-cover border border-slate-200"
+                          className="h-10 w-10 rounded-full object-cover border border-slate-200 shrink-0"
                         />
-                        <div className="flex flex-col">
-                          <span className="text-sm font-bold text-slate-800">{currentUser.name}</span>
-                          <span className="text-xs text-slate-500">{currentUser.email}</span>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-sm font-bold text-slate-800 truncate">{currentUser.name}</span>
+                          <span className="text-[10px] text-slate-500 truncate">{currentUser.email}</span>
                         </div>
                       </div>
                       
-
                       <Button
                         variant="destructive"
                         onClick={logout}
-                        className="w-full mt-2 gap-2"
+                        className="w-full gap-2 rounded-xl h-10 text-xs font-bold"
                       >
                         <LogOut className="h-4 w-4" />
                         Keluar
@@ -212,12 +217,12 @@ export const Navbar = () => {
                   ) : (
                     <div className="flex flex-col gap-3">
                       <Link href="/login" className="w-full">
-                        <Button variant="outline" className="w-full text-blue-900 border-blue-200">
+                        <Button variant="outline" className="w-full text-blue-900 border-blue-200 rounded-xl h-11 text-xs font-bold">
                           Masuk
                         </Button>
                       </Link>
                       <Link href="/register" className="w-full">
-                        <Button className="w-full bg-blue-600 text-white">
+                        <Button className="w-full bg-blue-600 text-white rounded-xl h-11 text-xs font-bold shadow-md shadow-blue-650/10">
                           Daftar Sekarang
                         </Button>
                       </Link>
