@@ -129,8 +129,8 @@ export default function Home() {
               </p>
 
               {/* Capsule Search Bar */}
-              <div className="mt-10 max-w-2xl mx-auto rounded-full bg-white p-2.5 shadow-xl shadow-blue-900/5 border border-slate-100 flex flex-col sm:flex-row items-center gap-2">
-                <div className="flex items-center gap-2 px-3 flex-1 w-full border-b sm:border-b-0 sm:border-r border-slate-100 pb-2 sm:pb-0">
+              <div className="mt-10 max-w-2xl mx-auto rounded-2xl sm:rounded-full bg-white p-2.5 shadow-xl shadow-blue-900/5 border border-slate-100 flex flex-col sm:flex-row items-center gap-2">
+                <div className="flex items-center gap-2 px-3 flex-1 w-full border-b sm:border-b-0 sm:border-r border-slate-100 pb-3 sm:pb-0">
                   <Search className="h-5 w-5 text-slate-400 shrink-0" />
                   <Input
                     type="text"
@@ -141,12 +141,12 @@ export default function Home() {
                   />
                 </div>
                 
-                <div className="flex items-center gap-1.5 px-3 w-full sm:w-auto shrink-0">
+                <div className="flex items-center gap-1.5 px-3 w-full sm:w-auto shrink-0 border-b sm:border-b-0 sm:border-r border-slate-100 pb-3 sm:pb-0">
                   <MapPin className="h-5 w-5 text-orange-500 shrink-0" />
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
-                    className="border-0 bg-transparent text-sm text-slate-700 font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none cursor-pointer pr-4"
+                    className="border-0 bg-transparent text-sm text-slate-700 font-semibold focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none cursor-pointer w-full sm:w-auto pr-4"
                   >
                     {cities.map((city) => (
                       <option key={city.value} value={city.value} disabled={city.disabled}>
@@ -157,7 +157,7 @@ export default function Home() {
                 </div>
 
                 <Button 
-                  className="w-full sm:w-auto rounded-full bg-blue-700 hover:bg-blue-800 text-white font-semibold px-6 shadow-md shadow-blue-700/20"
+                  className="w-full sm:w-auto rounded-xl sm:rounded-full bg-blue-700 hover:bg-blue-800 text-white font-bold px-6 py-5 sm:py-2.5 shadow-md shadow-blue-700/20 cursor-pointer"
                 >
                   Cari
                 </Button>
