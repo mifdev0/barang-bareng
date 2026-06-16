@@ -428,7 +428,7 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400 pt-8">
             <span>&copy; {new Date().getFullYear()} Barang Bareng Marketplace. Hak Cipta Dilindungi.</span>
-            <span>Made with ❤️ for MVP Demo</span>
+            <span>Made with ❤️ for Barang Bareng</span>
           </div>
         </div>
       </footer>

@@ -16,7 +16,7 @@ function LoginFormContent() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/dashboard";
 
-  const { login, users, currentUser } = useApp();
+  const { login, currentUser } = useApp();
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<Role>("Customer");
   const [error, setError] = useState("");
@@ -39,13 +39,6 @@ function LoginFormContent() {
     }
   };
 
-  const handleQuickLogin = async (demoEmail: string, demoRole: Role) => {
-    setEmail(demoEmail);
-    setRole(demoRole);
-    await login(demoEmail, demoRole);
-    router.push(redirect);
-  };
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-4xl mx-auto">
       {/* Left side: branding/intro */}
@@ -60,48 +53,6 @@ function LoginFormContent() {
           <p className="mt-3 text-sm text-slate-500 leading-relaxed">
             Mulailah mengelola barang sewaan Anda atau cari barang kebutuhan harian Anda dengan negosiasi harga terbaik.
           </p>
-        </div>
-
-        {/* Demo Accounts Panel */}
-        <div className="bg-slate-100/80 rounded-2xl p-4 border border-slate-200/50 space-y-3">
-          <span className="text-xs font-bold text-slate-500 block uppercase tracking-wider">
-            Akun Demo Cepat (Klik untuk Masuk):
-          </span>
-          
-          <div className="space-y-2">
-            {users.map((demoUser) => (
-              <button
-                key={`${demoUser.id}-${demoUser.role}`}
-                type="button"
-                onClick={() => handleQuickLogin(demoUser.email, demoUser.role)}
-                className="w-full text-left bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-xl p-2.5 transition-all text-xs flex items-center justify-between"
-              >
-                <div className="flex items-center gap-2">
-                  <img
-                    src={demoUser.avatar}
-                    alt={demoUser.name}
-                    className="h-6 w-6 rounded-full object-cover border"
-                  />
-                  <div>
-                    <span className="font-bold text-slate-800 block">{demoUser.name}</span>
-                    <span className="text-slate-400 text-[10px]">{demoUser.email}</span>
-                  </div>
-                </div>
-                <Badge
-                  className={`text-[9px] px-1.5 py-0.5 rounded ${
-                    demoUser.role === "Admin"
-                      ? "bg-purple-100 text-purple-700 border-purple-200"
-                      : demoUser.role === "Owner"
-                      ? "bg-orange-100 text-orange-700 border-orange-200"
-                      : "bg-blue-100 text-blue-700 border-blue-200"
-                  }`}
-                  variant="outline"
-                >
-                  {demoUser.role}
-                </Badge>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -159,12 +110,9 @@ function LoginFormContent() {
               />
             </div>
 
-            {/* Password (Optional for mock auth) */}
+            {/* Password */}
             <div className="space-y-1.5">
-              <div className="flex justify-between items-center">
-                <label className="text-xs font-bold text-slate-600">Password</label>
-                <span className="text-[10px] text-slate-400 font-semibold italic">Opsional untuk demo</span>
-              </div>
+              <label className="text-xs font-bold text-slate-600">Password</label>
               <Input
                 type="password"
                 placeholder="••••••••"

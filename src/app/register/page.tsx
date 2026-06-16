@@ -142,10 +142,7 @@ export default function RegisterPage() {
 
                 {/* Password input */}
                 <div className="space-y-1.5">
-                  <div className="flex justify-between items-center">
-                    <label className="text-xs font-bold text-slate-700">Password</label>
-                    <span className="text-[10px] text-slate-400 font-semibold italic">Opsional untuk demo</span>
-                  </div>
+                  <label className="text-xs font-bold text-slate-700">Password</label>
                   <Input
                     type="password"
                     placeholder="••••••••"
