@@ -42,15 +42,15 @@ function LoginFormContent() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-4xl mx-auto">
       {/* Left side: branding/intro */}
-      <div className="lg:col-span-5 space-y-6 text-center lg:text-left">
+      <div className="lg:col-span-5 space-y-4 text-center lg:text-left">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 mb-3 border border-blue-100">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-0.5 text-[10px] sm:text-xs font-semibold text-blue-700 mb-2 sm:mb-3 border border-blue-100">
             Sewa & Penyewaan Aman
           </span>
-          <h1 className="text-3xl font-black tracking-tight text-slate-900 leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-tight">
             Masuk ke <span className="text-blue-700">Barang Bareng</span>
           </h1>
-          <p className="mt-3 text-sm text-slate-500 leading-relaxed">
+          <p className="mt-2 text-xs sm:text-sm text-slate-500 leading-relaxed">
             Mulailah mengelola barang sewaan Anda atau cari barang kebutuhan harian Anda dengan negosiasi harga terbaik.
           </p>
         </div>

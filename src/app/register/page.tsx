@@ -50,20 +50,20 @@ export default function RegisterPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center max-w-4xl mx-auto w-full">
           
           {/* Left side: branding/intro */}
-          <div className="lg:col-span-5 space-y-6 text-center lg:text-left">
+          <div className="lg:col-span-5 space-y-4 text-center lg:text-left">
             <div>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 mb-3 border border-blue-100">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-0.5 text-[10px] sm:text-xs font-semibold text-blue-700 mb-2 sm:mb-3 border border-blue-100">
                 Pendaftaran Gratis
               </span>
-              <h1 className="text-3xl font-black tracking-tight text-slate-900 leading-tight">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-tight">
                 Bergabung dengan <span className="text-blue-700">Barang Bareng</span>
               </h1>
-              <p className="mt-3 text-sm text-slate-500 leading-relaxed">
+              <p className="mt-2 text-xs sm:text-sm text-slate-500 leading-relaxed">
                 Mendaftar sebagai Customer untuk mulai menyewa, atau sebagai Owner untuk mulai menyewakan barang fisik Anda dan hasilkan pendapatan!
               </p>
             </div>
             
-            <div className="bg-slate-100/80 rounded-2xl p-5 border border-slate-200/50 text-xs space-y-3 leading-relaxed text-slate-600 text-left">
+            <div className="bg-slate-100/80 rounded-2xl p-4 border border-slate-200/50 text-[11px] sm:text-xs space-y-2.5 leading-relaxed text-slate-600 text-left">
               <span className="font-bold text-slate-800 uppercase tracking-wider block">Ketentuan Pembuatan Toko:</span>
               <p>
                 ✔️ Owner dapat membuat lebih dari satu toko (multi-toko).<br />

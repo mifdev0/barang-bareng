@@ -282,13 +282,13 @@ export default function DashboardPage() {
         <div className="container mx-auto px-4 sm:px-6">
           
           {/* Header */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 sm:mb-10">
             <div>
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Dashboard Panel</span>
-              <h1 className="text-3xl font-black text-slate-900 mt-1">
+              <span className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest">Dashboard Panel</span>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">
                 Halo, {currentUser.name}
               </h1>
-              <p className="text-slate-500 text-sm">
+              <p className="text-slate-500 text-xs sm:text-sm">
                 Kelola aktivitas penyewaan Anda sebagai <strong className="text-blue-600">{currentUser.role}</strong> di sini.
               </p>
             </div>
@@ -654,59 +654,59 @@ export default function DashboardPage() {
           {currentUser.role === "Owner" && (
             <div className="space-y-8">
               {/* Financial Balance Summary Card */}
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <Card className="rounded-2xl bg-gradient-to-tr from-amber-600 to-orange-500 text-white border-0 shadow-md">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-amber-100 font-bold block uppercase tracking-wider">Saldo Pending (Belum Ditransfer Admin)</span>
-                      <span className="text-2xl font-black block mt-2">
+                      <span className="text-[10px] sm:text-xs text-amber-100 font-bold block uppercase tracking-wider">Saldo Pending</span>
+                      <span className="text-lg sm:text-2xl font-black block mt-1">
                         Rp {ownerPendingPayout.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
-                      <Clock className="h-6 w-6 text-white" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white border-0 shadow-md">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-emerald-100 font-bold block uppercase tracking-wider">Saldo Cair (Sudah Ditransfer Admin)</span>
-                      <span className="text-2xl font-black block mt-2">
+                      <span className="text-[10px] sm:text-xs text-emerald-100 font-bold block uppercase tracking-wider">Saldo Cair</span>
+                      <span className="text-lg sm:text-2xl font-black block mt-1">
                         Rp {ownerPaidPayout.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
-                      <CheckCircle className="h-6 w-6 text-white" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-2xl bg-white border-slate-200/60 shadow-sm">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-slate-400 font-bold block uppercase tracking-wider">Total Toko Aktif</span>
-                      <span className="text-2xl font-black block text-slate-800 mt-2">
+                      <span className="text-[10px] sm:text-xs text-slate-400 font-bold block uppercase tracking-wider">Total Toko Aktif</span>
+                      <span className="text-lg sm:text-2xl font-black block text-slate-800 mt-1">
                         {ownerStores.length} Toko
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center">
-                      <StoreIcon className="h-6 w-6" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                      <StoreIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-2xl bg-white border-slate-200/60 shadow-sm">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-slate-400 font-bold block uppercase tracking-wider">Total Listing Barang</span>
-                      <span className="text-2xl font-black block text-slate-800 mt-2">
+                      <span className="text-[10px] sm:text-xs text-slate-400 font-bold block uppercase tracking-wider">Listing Barang</span>
+                      <span className="text-lg sm:text-2xl font-black block text-slate-800 mt-1">
                         {ownerItems.length} Barang
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center">
-                      <ShoppingBag className="h-6 w-6" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                      <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
                   </CardContent>
                 </Card>
@@ -924,59 +924,59 @@ export default function DashboardPage() {
           {currentUser.role === "Admin" && (
             <div className="space-y-8">
               {/* Financial Stats Summary */}
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <Card className="rounded-2xl bg-gradient-to-tr from-purple-700 to-indigo-600 text-white border-0 shadow-md">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-purple-100 font-bold block uppercase tracking-wider">Total Uang Masuk (Gross)</span>
-                      <span className="text-2xl font-black block mt-2">
+                      <span className="text-[10px] sm:text-xs text-purple-100 font-bold block uppercase tracking-wider">Total Uang Masuk</span>
+                      <span className="text-lg sm:text-2xl font-black block mt-1">
                         Rp {totalReceivedGross.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
-                      <DollarSign className="h-6 w-6" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <DollarSign className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-2xl bg-gradient-to-tr from-rose-600 to-orange-500 text-white border-0 shadow-md">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-rose-100 font-bold block uppercase tracking-wider">Harus Dibayar ke Owner (Pending)</span>
-                      <span className="text-2xl font-black block mt-2">
+                      <span className="text-[10px] sm:text-xs text-rose-100 font-bold block uppercase tracking-wider">Harus Dibayar ke Owner</span>
+                      <span className="text-lg sm:text-2xl font-black block mt-1">
                         Rp {totalPendingPayoutToOwners.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
-                      <Clock className="h-6 w-6 text-white" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white border-0 shadow-md">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-emerald-100 font-bold block uppercase tracking-wider">Sudah Dibayar ke Owner (Cair)</span>
-                      <span className="text-2xl font-black block mt-2">
+                      <span className="text-[10px] sm:text-xs text-emerald-100 font-bold block uppercase tracking-wider">Sudah Dibayar ke Owner</span>
+                      <span className="text-lg sm:text-2xl font-black block mt-1">
                         Rp {totalPaidPayoutToOwners.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center">
-                      <CheckCircle className="h-6 w-6 text-white" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-2xl bg-white border-slate-200/60 shadow-sm">
-                  <CardContent className="p-6 flex items-center justify-between">
+                  <CardContent className="p-4 sm:p-6 flex items-center justify-between">
                     <div>
-                      <span className="text-xs text-slate-400 font-bold block uppercase tracking-wider">Komisi Platform Bersih (10%)</span>
-                      <span className="text-2xl font-black block text-slate-800 mt-2">
+                      <span className="text-[10px] sm:text-xs text-slate-400 font-bold block uppercase tracking-wider">Komisi Platform (10%)</span>
+                      <span className="text-lg sm:text-2xl font-black block text-slate-800 mt-1">
                         Rp {totalPlatformEarnings.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="h-12 w-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                      <TrendingUp className="h-6 w-6" />
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                      <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
                   </CardContent>
                 </Card>
