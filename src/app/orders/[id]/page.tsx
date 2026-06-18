@@ -19,19 +19,48 @@ import {
   HelpCircle,
   ShoppingBag,
   ExternalLink,
-  Store
+  Store,
+  AlertCircle
 } from "lucide-react";
 
 export default function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
-  const { orders, items, stores, currentUser, uploadPaymentProof, confirmPayment, completeOrder, uploadImage, showAlert } = useApp();
+  const { orders, items, stores, currentUser, uploadPaymentProof, uploadIdentityProof, confirmPayment, completeOrder, uploadImage, showAlert } = useApp();
   
   const [proofInput, setProofInput] = useState("");
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
+  const [idFile, setIdFile] = useState<File | null>(null);
+  const [isUploadingId, setIsUploadingId] = useState(false);
+
   const order = orders.find((o) => o.id === id);
+
+  const handleUploadIdentity = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!order) return;
+    
+    let idUrl = "";
+    if (idFile) {
+      setIsUploadingId(true);
+      try {
+        idUrl = await uploadImage(idFile, "pinjamin");
+      } catch (err: any) {
+        showAlert("Gagal", "Gagal mengunggah kartu identitas: " + (err.message || err), "error");
+        setIsUploadingId(false);
+        return;
+      }
+      setIsUploadingId(false);
+    } else {
+      // Automatic simulation identity card url if empty
+      idUrl = "https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?w=600";
+    }
+
+    await uploadIdentityProof(order.id, idUrl);
+    setIdFile(null);
+    showAlert("Sukses", "Kartu identitas berhasil diunggah sebagai jaminan sewa.", "success");
+  };
 
   // Auto-redirect if not logged in
   useEffect(() => {
@@ -338,6 +367,120 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
                   </CardContent>
                 </Card>
               )}
+
+              {/* Kolom Jaminan Customer (Upload Kartu Identitas) */}
+              <Card className="rounded-2xl border-slate-100 bg-white shadow-sm overflow-hidden">
+                <CardContent className="p-6 space-y-4">
+                  <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-3 mb-2 flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-purple-600" />
+                    Jaminan Penyewaan (Kartu Identitas)
+                  </h2>
+                  
+                  {order.identityProofUrl ? (
+                    <div className="space-y-3">
+                      <div className="p-3 bg-purple-50 text-purple-800 text-xs rounded-xl flex items-center gap-2 border border-purple-100">
+                        <CheckCircle2 className="h-4 w-4 text-purple-600 shrink-0" />
+                        <span className="font-semibold">Kartu Identitas Jaminan telah diunggah & aman di sistem.</span>
+                      </div>
+                      
+                      <div className="border border-slate-100 rounded-xl overflow-hidden aspect-video bg-slate-50 flex items-center justify-center relative">
+                        <img
+                          src={order.identityProofUrl}
+                          alt="Kartu Identitas Jaminan"
+                          className="max-h-full max-w-full object-contain"
+                        />
+                        <a 
+                          href={order.identityProofUrl} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="absolute bottom-3 right-3 bg-black/60 text-white p-2 rounded-lg text-xs font-bold flex items-center gap-1 hover:bg-black/80 transition-colors"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          Buka Gambar
+                        </a>
+                      </div>
+
+                      {currentUser.role === "Customer" && (
+                        <form onSubmit={handleUploadIdentity} className="space-y-2 pt-2">
+                          <label className="text-xs font-bold text-slate-700 block">
+                            Ganti Kartu Identitas (KTP/SIM/Paspor)
+                          </label>
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  setIdFile(e.target.files[0]);
+                                }
+                              }}
+                              className="flex-1 border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white cursor-pointer"
+                            />
+                            <Button 
+                              type="submit" 
+                              disabled={isUploadingId}
+                              className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl disabled:opacity-50 text-xs"
+                            >
+                              {isUploadingId ? "Mengunggah..." : "Unggah Ulang"}
+                            </Button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="p-3 bg-amber-50 text-amber-800 text-xs rounded-xl flex items-center gap-2 border border-amber-100">
+                        <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
+                        <span className="font-semibold">
+                          {currentUser.role === "Customer" 
+                            ? "Harap unggah KTP/SIM Anda sebagai jaminan sebelum serah terima barang." 
+                            : "Customer belum mengunggah kartu identitas jaminan."}
+                        </span>
+                      </div>
+
+                      {currentUser.role === "Customer" ? (
+                        <form onSubmit={handleUploadIdentity} className="space-y-3">
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-slate-700 block">
+                              Unggah Kartu Identitas (KTP/SIM/Paspor)
+                            </label>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  setIdFile(e.target.files[0]);
+                                }
+                              }}
+                              className="w-full border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white cursor-pointer"
+                            />
+                            {idFile && (
+                              <p className="text-[10px] text-slate-500 font-semibold">
+                                File terpilih: {idFile.name} ({(idFile.size / 1024).toFixed(1)} KB)
+                              </p>
+                            )}
+                            <p className="text-[10px] text-slate-400 font-semibold">
+                              *Biarkan kosong untuk menggunakan KTP simulasi otomatis.
+                            </p>
+                          </div>
+
+                          <Button 
+                            type="submit" 
+                            disabled={isUploadingId}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl disabled:opacity-50"
+                          >
+                            {isUploadingId ? "Mengunggah Kartu..." : "Simpan Kartu Identitas Jaminan"}
+                          </Button>
+                        </form>
+                      ) : (
+                        <p className="text-xs text-slate-400 italic font-semibold text-center py-4">
+                          Menunggu customer mengunggah kartu identitas jaminan.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
             </div>
 

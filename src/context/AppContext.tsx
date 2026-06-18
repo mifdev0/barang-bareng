@@ -89,6 +89,7 @@ export interface Order {
   deliveryAddress?: string;
   payoutStatus: "Pending" | "Paid";
   payoutConfirmedAt?: string;
+  identityProofUrl?: string;
 }
 
 import { CheckCircle2, AlertCircle, Info, HelpCircle } from "lucide-react";
@@ -113,6 +114,7 @@ interface AppContextType {
   sendMessage: (chatId: string, senderId: string, content: string, type?: "text" | "negotiation" | "order_link", negotiatedPrice?: number, orderId?: string) => Promise<void>;
   createOrder: (chatId: string, itemId: string, customerId: string, ownerId: string, startDate: string, endDate: string, finalPricePerDay: number, deliveryMethod?: "Ambil di Lokasi" | "Diantar", deliveryAddress?: string) => Promise<Order>;
   uploadPaymentProof: (orderId: string, proofUrl: string) => Promise<void>;
+  uploadIdentityProof: (orderId: string, idUrl: string) => Promise<void>;
   confirmPayment: (orderId: string) => Promise<void>;
   completeOrder: (orderId: string) => Promise<void>;
   confirmPayout: (orderId: string) => Promise<void>;
@@ -473,6 +475,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                   deliveryAddress: raw.delivery_address || "",
                   payoutStatus: raw.payout_status || "Pending",
                   payoutConfirmedAt: raw.payout_confirmed_at,
+                  identityProofUrl: raw.identity_proof_url,
                 },
                 ...prev,
               ];
@@ -488,6 +491,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
                       paymentConfirmedAt: raw.payment_confirmed_at,
                       payoutStatus: raw.payout_status || "Pending",
                       payoutConfirmedAt: raw.payout_confirmed_at,
+                      identityProofUrl: raw.identity_proof_url,
                     }
                   : o
               )
@@ -744,6 +748,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               deliveryAddress: o.delivery_address || "",
               payoutStatus: o.payout_status || "Pending",
               payoutConfirmedAt: o.payout_confirmed_at,
+              identityProofUrl: o.identity_proof_url,
             }))
           );
         }
@@ -1295,6 +1300,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deliveryAddress: data.delivery_address || "",
         payoutStatus: data.payout_status || "Pending",
         payoutConfirmedAt: data.payout_confirmed_at,
+        identityProofUrl: data.identity_proof_url,
       };
 
       setOrders((prev) => [created, ...prev]);
@@ -1354,6 +1360,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             ...o,
             status: "Pembayaran Dikirim" as const,
             paymentProofUrl: proofUrl,
+          };
+        }
+        return o;
+      });
+      setOrders(updated);
+      saveToStorage("pinjamin_orders", updated);
+    }
+  };
+
+  const uploadIdentityProof = async (orderId: string, idUrl: string) => {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase
+        .from("orders")
+        .update({
+          identity_proof_url: idUrl,
+        })
+        .eq("id", orderId);
+      
+      if (error) throw error;
+
+      setOrders((prev) =>
+        prev.map((o) => (o.id === orderId ? { ...o, identityProofUrl: idUrl } : o))
+      );
+    } else {
+      const updated = orders.map((o) => {
+        if (o.id === orderId) {
+          return {
+            ...o,
+            identityProofUrl: idUrl,
           };
         }
         return o;
@@ -1558,6 +1593,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         sendMessage,
         createOrder,
         uploadPaymentProof,
+        uploadIdentityProof,
         confirmPayment,
         completeOrder,
         confirmPayout,

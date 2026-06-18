@@ -32,7 +32,6 @@ export default function Home() {
     { name: "Semua", icon: Sparkles, color: "from-blue-500 to-indigo-500" },
     { name: "Cars", label: "Cars", icon: Car, color: "from-emerald-500 to-teal-500" },
     { name: "Property", label: "Property", icon: Tent, color: "from-orange-500 to-amber-500" },
-    { name: "Jobs", label: "Jobs", icon: Briefcase, color: "from-purple-500 to-pink-500" },
     { name: "Electronics", label: "Electronics", icon: Laptop, color: "from-blue-500 to-sky-500" },
     { name: "Furniture", label: "Furniture", icon: Armchair, color: "from-rose-500 to-red-500" },
     { name: "Animes", label: "Animes", icon: Sparkles, color: "from-violet-500 to-purple-500" },

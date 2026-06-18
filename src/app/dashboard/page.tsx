@@ -405,7 +405,6 @@ export default function DashboardPage() {
                           >
                             <option value="Cars">Cars</option>
                             <option value="Property">Property</option>
-                            <option value="Jobs">Jobs</option>
                             <option value="Electronics">Electronics</option>
                             <option value="Furniture">Furniture</option>
                             <option value="Animes">Animes</option>
@@ -476,7 +475,6 @@ export default function DashboardPage() {
                             >
                               <option value="Cars">Cars</option>
                               <option value="Property">Property</option>
-                              <option value="Jobs">Jobs</option>
                               <option value="Electronics">Electronics</option>
                               <option value="Furniture">Furniture</option>
                               <option value="Animes">Animes</option>
@@ -1211,7 +1209,6 @@ export default function DashboardPage() {
                 >
                   <option value="Cars">Cars</option>
                   <option value="Property">Property</option>
-                  <option value="Jobs">Jobs</option>
                   <option value="Electronics">Electronics</option>
                   <option value="Furniture">Furniture</option>
                   <option value="Animes">Animes</option>

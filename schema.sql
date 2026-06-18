@@ -147,6 +147,7 @@ create table public.orders (
   status text check (status in ('Menunggu Pembayaran', 'Pembayaran Dikirim', 'Dikonfirmasi', 'Aktif', 'Selesai')) not null default 'Menunggu Pembayaran',
   payment_proof_url text,
   payment_confirmed_at timestamptz,
+  identity_proof_url text,
   created_at timestamptz not null default now()
 );
 
