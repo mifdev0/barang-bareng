@@ -40,26 +40,22 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
   const handleUploadIdentity = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!order) return;
-    
-    let idUrl = "";
-    if (idFile) {
-      setIsUploadingId(true);
-      try {
-        idUrl = await uploadImage(idFile, "pinjamin");
-      } catch (err: any) {
-        showAlert("Gagal", "Gagal mengunggah kartu identitas: " + (err.message || err), "error");
-        setIsUploadingId(false);
-        return;
-      }
-      setIsUploadingId(false);
-    } else {
-      // Automatic simulation identity card url if empty
-      idUrl = "https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?w=600";
+    if (!idFile) {
+      showAlert("Peringatan", "Harap pilih file kartu identitas terlebih dahulu.", "info");
+      return;
     }
-
-    await uploadIdentityProof(order.id, idUrl);
-    setIdFile(null);
-    showAlert("Sukses", "Kartu identitas berhasil diunggah sebagai jaminan sewa.", "success");
+    
+    setIsUploadingId(true);
+    try {
+      const idUrl = await uploadImage(idFile, "pinjamin");
+      await uploadIdentityProof(order.id, idUrl);
+      setIdFile(null);
+      showAlert("Sukses", "Kartu identitas berhasil diunggah sebagai jaminan sewa.", "success");
+    } catch (err: any) {
+      showAlert("Gagal", "Gagal mengunggah kartu identitas: " + (err.message || err), "error");
+    } finally {
+      setIsUploadingId(false);
+    }
   };
 
   // Auto-redirect if not logged in
@@ -94,26 +90,23 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
 
   const handleUploadProof = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    let proofUrl = "";
-    if (proofFile) {
-      setIsUploading(true);
-      try {
-        proofUrl = await uploadImage(proofFile, "pinjamin");
-      } catch (err: any) {
-        showAlert("Gagal", "Gagal mengunggah bukti transfer: " + (err.message || err), "error");
-        setIsUploading(false);
-        return;
-      }
-      setIsUploading(false);
-    } else {
-      proofUrl = "https://images.unsplash.com/photo-1616077168079-7e09a677fb2c?w=600";
+    if (!proofFile) {
+      showAlert("Peringatan", "Harap pilih file bukti transfer terlebih dahulu.", "info");
+      return;
     }
-
-    await uploadPaymentProof(order.id, proofUrl);
-    setProofInput("");
-    setProofFile(null);
-    showAlert("Sukses", "Bukti pembayaran berhasil diunggah! Menunggu konfirmasi owner.", "success");
+    
+    setIsUploading(true);
+    try {
+      const proofUrl = await uploadImage(proofFile, "pinjamin");
+      await uploadPaymentProof(order.id, proofUrl);
+      setProofInput("");
+      setProofFile(null);
+      showAlert("Sukses", "Bukti pembayaran berhasil diunggah! Menunggu konfirmasi owner.", "success");
+    } catch (err: any) {
+      showAlert("Gagal", "Gagal mengunggah bukti transfer: " + (err.message || err), "error");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleConfirm = async () => {
@@ -309,6 +302,7 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
                           <input
                             type="file"
                             accept="image/*"
+                            required={true}
                             onChange={(e) => {
                               if (e.target.files && e.target.files[0]) {
                                 setProofFile(e.target.files[0]);
@@ -321,9 +315,6 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
                               File terpilih: {proofFile.name} ({(proofFile.size / 1024).toFixed(1)} KB)
                             </p>
                           )}
-                          <p className="text-[10px] text-slate-400 font-semibold">
-                            *Biarkan kosong untuk mengunggah bukti transfer simulasi otomatis.
-                          </p>
                         </div>
 
                         <Button 
@@ -447,6 +438,7 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
                             <input
                               type="file"
                               accept="image/*"
+                              required={true}
                               onChange={(e) => {
                                 if (e.target.files && e.target.files[0]) {
                                   setIdFile(e.target.files[0]);
@@ -459,9 +451,6 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
                                 File terpilih: {idFile.name} ({(idFile.size / 1024).toFixed(1)} KB)
                               </p>
                             )}
-                            <p className="text-[10px] text-slate-400 font-semibold">
-                              *Biarkan kosong untuk menggunakan KTP simulasi otomatis.
-                            </p>
                           </div>
 
                           <Button 
