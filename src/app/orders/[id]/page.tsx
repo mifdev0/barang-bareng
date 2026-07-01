@@ -20,13 +20,14 @@ import {
   ShoppingBag,
   ExternalLink,
   Store,
-  AlertCircle
+  AlertCircle,
+  Printer
 } from "lucide-react";
 
 export default function OrderDetail({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { id } = use(params);
-  const { orders, items, stores, currentUser, uploadPaymentProof, uploadIdentityProof, confirmPayment, completeOrder, uploadImage, showAlert } = useApp();
+  const { orders, items, stores, users, currentUser, uploadPaymentProof, uploadIdentityProof, confirmPayment, completeOrder, uploadImage, showAlert } = useApp();
   
   const [proofInput, setProofInput] = useState("");
   const [proofFile, setProofFile] = useState<File | null>(null);
@@ -36,6 +37,8 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
   const [isUploadingId, setIsUploadingId] = useState(false);
 
   const order = orders.find((o) => o.id === id);
+  const customer = order ? users.find((u) => u.id === order.customerId) : null;
+  const owner = order ? users.find((u) => u.id === order.ownerId) : null;
 
   const handleUploadIdentity = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,10 +139,12 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
-      <Navbar />
+    <div className="flex min-h-screen flex-col bg-slate-50 print:bg-white print:min-h-0">
+      {/* Normal UI View (Hidden when printing) */}
+      <div className="flex-1 flex flex-col print:hidden">
+        <Navbar />
 
-      <main className="flex-1 py-10">
+        <main className="flex-1 py-10">
         <div className="container mx-auto px-4 sm:px-6 max-w-4xl">
           
           <Link href="/dashboard" className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-700 font-semibold mb-6 transition-colors">
@@ -153,8 +158,17 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
               <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">ID ORDER: #{order.id.slice(-8).toUpperCase()}</span>
               <h1 className="text-2xl font-black text-slate-900 mt-1">Detail Transaksi Penyewaan</h1>
             </div>
-            <div>
+            <div className="flex flex-wrap items-center gap-3">
               {getStatusBadge(order.status)}
+              <Button
+                onClick={() => window.print()}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 border-slate-200 text-slate-700 hover:bg-slate-50 font-bold px-4 py-2.5 rounded-xl print:hidden cursor-pointer"
+              >
+                <Printer className="h-4 w-4 text-slate-500" />
+                <span>Cetak Nota / PDF</span>
+              </Button>
             </div>
           </div>
 
@@ -591,6 +605,129 @@ export default function OrderDetail({ params }: { params: Promise<{ id: string }
           </div>
         </div>
       </main>
+      </div>
+
+      {/* Cetak Nota Sewa (Print View) */}
+      <div className="hidden print:block w-full max-w-4xl mx-auto p-10 bg-white text-slate-900 font-sans leading-relaxed">
+        {/* Header Nota */}
+        <div className="flex justify-between items-center border-b-2 border-slate-950 pb-6 mb-8">
+          <div>
+            <h1 className="text-3xl font-black tracking-tight text-blue-700">BARANG BARENG</h1>
+            <p className="text-xs text-slate-500 font-semibold tracking-wider uppercase mt-1">Platform Marketplace Penyewaan Solo Area</p>
+          </div>
+          <div className="text-right">
+            <h2 className="text-xl font-bold text-slate-800 uppercase tracking-wide">Nota Penyewaan Resmi</h2>
+            <p className="text-xs font-semibold text-slate-500 mt-1">ID ORDER: #{order.id.toUpperCase()}</p>
+          </div>
+        </div>
+
+        {/* Info Transaksi */}
+        <div className="grid grid-cols-2 gap-8 mb-8">
+          <div className="space-y-2">
+            <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider">Pemberi Sewa (Owner)</h3>
+            <div className="text-sm font-bold text-slate-800">
+              <p className="text-base font-black text-slate-900">{store?.name || "Toko Barang Bareng"}</p>
+              <p className="mt-1">Nama Owner: {owner?.name || "Owner Toko"}</p>
+              <p className="mt-0.5">Kontak/HP: {owner?.phone || "Tidak Ada"}</p>
+              <p className="mt-0.5">Alamat: {store?.address || "Solo, Jawa Tengah"}</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider">Penerima Sewa (Customer)</h3>
+            <div className="text-sm font-bold text-slate-800">
+              <p className="text-base font-black text-slate-900">{customer?.name || "Customer"}</p>
+              <p className="mt-1">Email: {customer?.email || "Tidak Ada"}</p>
+              <p className="mt-0.5">Kontak/HP: {customer?.phone || "Tidak Ada"}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Detail Pembayaran & Status */}
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8 grid grid-cols-2 gap-6 text-sm">
+          <div className="space-y-2 border-r border-slate-250 pr-6">
+            <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider">Informasi Transaksi</h4>
+            <div className="space-y-1 font-semibold text-slate-700">
+              <p>Metode Pengantaran: <strong className="text-slate-900">{order.deliveryMethod}</strong></p>
+              {order.deliveryMethod === "Diantar" && (
+                <p>Alamat Pengantaran: <span className="text-slate-900">{order.deliveryAddress}</span></p>
+              )}
+              <p>Tanggal Sewa: <strong className="text-slate-900">{order.startDate} s/d {order.endDate}</strong></p>
+              <p>Durasi Sewa: <strong className="text-slate-900">{order.durationDays} Hari</strong></p>
+            </div>
+          </div>
+          <div className="space-y-2 pl-6">
+            <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider">Status & Jaminan</h4>
+            <div className="space-y-1 font-semibold text-slate-700">
+              <p>Status Transaksi: <strong className="text-emerald-700 uppercase tracking-wider">{order.status === "Selesai" ? "SELESAI" : order.status === "Dikonfirmasi" || order.status === "Aktif" ? "AKTIF" : order.status}</strong></p>
+              <p>Metode Pembayaran: <span className="text-slate-900">Transfer Mandiri (Sistem Bersama)</span></p>
+              <p>Jaminan Sewa: <strong className="text-purple-700 uppercase">{order.identityProofUrl ? "KTP Terlampir & Terverifikasi" : "Belum Dilampirkan"}</strong></p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabel Rincian Biaya */}
+        <div className="border border-slate-200 rounded-2xl overflow-hidden mb-8">
+          <table className="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr className="bg-slate-900 text-white font-black text-xs uppercase tracking-wider">
+                <th className="p-4">Deskripsi Barang</th>
+                <th className="p-4 text-center">Harga / Hari</th>
+                <th className="p-4 text-center">Durasi</th>
+                <th className="p-4 text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 font-semibold text-slate-700">
+              <tr>
+                <td className="p-4">
+                  <p className="font-black text-slate-900">{item?.name}</p>
+                  <p className="text-xs text-slate-400 mt-1">{item?.specs}</p>
+                </td>
+                <td className="p-4 text-center">Rp {order.pricePerDay.toLocaleString("id-ID")}</td>
+                <td className="p-4 text-center">{order.durationDays} Hari</td>
+                <td className="p-4 text-right font-black text-slate-900">Rp {order.totalPrice.toLocaleString("id-ID")}</td>
+              </tr>
+              <tr className="bg-slate-50 font-black text-slate-900">
+                <td colSpan={3} className="p-4 text-right uppercase tracking-wider text-xs">Total Pembayaran</td>
+                <td className="p-4 text-right text-lg text-blue-700">Rp {order.totalPrice.toLocaleString("id-ID")}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Bukti Jaminan Visual */}
+        {order.identityProofUrl && (
+          <div className="mb-10 page-break-inside-avoid">
+            <h3 className="text-xs font-black text-slate-400 uppercase tracking-wider mb-3">Lampiran Jaminan (Kartu Identitas)</h3>
+            <div className="border border-slate-200 rounded-2xl p-4 bg-slate-50 flex items-center justify-center overflow-hidden max-h-64">
+              <img
+                src={order.identityProofUrl}
+                alt="Jaminan Identitas"
+                className="max-h-56 object-contain rounded-xl border border-slate-200"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Tanda Tangan */}
+        <div className="grid grid-cols-2 gap-12 text-center text-sm font-semibold text-slate-700 pt-8 mt-12 border-t border-dashed border-slate-200 page-break-inside-avoid">
+          <div className="space-y-16">
+            <p>Penerima Sewa (Penyewa)</p>
+            <div className="w-48 border-b border-slate-400 mx-auto"></div>
+            <p className="text-xs text-slate-400">{customer?.name}</p>
+          </div>
+          <div className="space-y-16">
+            <p>Pemberi Sewa (Owner Toko)</p>
+            <div className="w-48 border-b border-slate-400 mx-auto"></div>
+            <p className="text-xs text-slate-400">{store?.name}</p>
+          </div>
+        </div>
+
+        {/* Footer Nota */}
+        <div className="text-center text-[10px] text-slate-400 font-semibold mt-16 space-y-1 border-t border-slate-100 pt-6">
+          <p>Dokumen ini sah dikeluarkan secara sistematis oleh platform Barang Bareng sebagai bukti transaksi penyewaan yang sah.</p>
+          <p>&copy; {new Date().getFullYear()} Barang Bareng Solo Area. Seluruh Hak Cipta Dilindungi.</p>
+        </div>
+      </div>
     </div>
   );
 }
